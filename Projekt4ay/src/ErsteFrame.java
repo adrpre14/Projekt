@@ -66,6 +66,7 @@ public class ErsteFrame extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         Combo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        Row = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,6 +157,13 @@ public class ErsteFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Tabelle:");
 
+        Row.setText("Add Row");
+        Row.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RowActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -192,9 +200,12 @@ public class ErsteFrame extends javax.swing.JFrame {
                             .addComponent(Connect, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(0, 1010, Short.MAX_VALUE)))
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(424, 424, 424)
+                                .addComponent(Row)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -219,9 +230,11 @@ public class ErsteFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Row))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -279,7 +292,7 @@ public class ErsteFrame extends javax.swing.JFrame {
             update.executeUpdate();
             
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            
             javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage());        }
         
     }
@@ -312,7 +325,7 @@ public class ErsteFrame extends javax.swing.JFrame {
         try {
             String clas=(String) Combo.getSelectedItem();
             PreparedStatement state=con.prepareStatement("select * from "+clas+";");
-            System.out.println(state);
+            
             ResultSet r=state.executeQuery();
             
             ResultSetMetaData rsmd=r.getMetaData();
@@ -360,7 +373,7 @@ public class ErsteFrame extends javax.swing.JFrame {
             @Override
             public void tableChanged(TableModelEvent e){
                 tableModelChanged(e);
-                System.out.println("Table changed");
+                
            }
             
         });
@@ -370,6 +383,16 @@ public class ErsteFrame extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_ComboActionPerformed
+
+    private void RowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RowActionPerformed
+        
+        try {
+            PreparedStatement update=con.prepareStatement("INSERT INTO "+Combo.getSelectedItem()+" VALUES();");
+            update.executeUpdate();
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_RowActionPerformed
 
     /**
      * @param args the command line arguments
@@ -413,6 +436,7 @@ public class ErsteFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField PasswordT;
     private javax.swing.JLabel PortL;
     private javax.swing.JTextField PortT;
+    private javax.swing.JButton Row;
     private javax.swing.JLabel ServerL;
     private javax.swing.JTextField ServerT;
     private javax.swing.JLabel UsernameL;
