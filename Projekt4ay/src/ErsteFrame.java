@@ -1,5 +1,4 @@
 
-import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -7,21 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 
 /*
@@ -281,7 +271,7 @@ public class ErsteFrame extends javax.swing.JFrame {
         
         try {
             
-            PreparedStatement update=con.prepareStatement("UPDATE city set "+columnname+"=? "
+            PreparedStatement update=con.prepareStatement("UPDATE "+Combo.getSelectedItem()+" set "+columnname+"=? "
                                                         + "WHERE "+primary_key+"=?;");
             update.setString(1, changed);            
             update.setInt(2, id);
