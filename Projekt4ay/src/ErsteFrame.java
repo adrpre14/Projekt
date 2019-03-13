@@ -66,7 +66,6 @@ public class ErsteFrame extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         Combo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        Row = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,13 +156,6 @@ public class ErsteFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Tabelle:");
 
-        Row.setText("Add Row");
-        Row.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RowActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,11 +193,8 @@ public class ErsteFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(424, 424, 424)
-                                .addComponent(Row)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 1010, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -230,11 +219,9 @@ public class ErsteFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Row))
+                .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -276,7 +263,7 @@ public class ErsteFrame extends javax.swing.JFrame {
         
         int row=e.getFirstRow();
         
-        int id=Integer.parseInt(jTable1.getModel().getValueAt(row, pkPosition).toString());
+        String id=jTable1.getModel().getValueAt(row, pkPosition).toString();
         String columnname=jTable1.getModel().getColumnName(e.getColumn());
         String changed=(String) jTable1.getValueAt(row, e.getColumn());
         //System.out.println(columnname+" "+row+" "+id);
@@ -287,7 +274,7 @@ public class ErsteFrame extends javax.swing.JFrame {
             PreparedStatement update=con.prepareStatement("UPDATE "+Combo.getSelectedItem()+" set "+columnname+"=? "
                                                         + "WHERE "+primary_key+"=?;");
             update.setString(1, changed);            
-            update.setInt(2, id);
+            update.setString(2, id);
             
             update.executeUpdate();
             
@@ -365,7 +352,7 @@ public class ErsteFrame extends javax.swing.JFrame {
             t.setColumnIdentifiers(column);
             t.setRowCount(r.getRow());
             t.setDataVector(resultSet, column);
-            
+            t.addRow(new Object[count]);
             jTable1.setModel(t);
             
             //javax.swing.JOptionPane.showMessageDialog(this, "Done");
@@ -383,16 +370,6 @@ public class ErsteFrame extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_ComboActionPerformed
-
-    private void RowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RowActionPerformed
-        
-        try {
-            PreparedStatement update=con.prepareStatement("INSERT INTO "+Combo.getSelectedItem()+" VALUES();");
-            update.executeUpdate();
-        } catch (SQLException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }//GEN-LAST:event_RowActionPerformed
 
     /**
      * @param args the command line arguments
@@ -436,7 +413,6 @@ public class ErsteFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField PasswordT;
     private javax.swing.JLabel PortL;
     private javax.swing.JTextField PortT;
-    private javax.swing.JButton Row;
     private javax.swing.JLabel ServerL;
     private javax.swing.JTextField ServerT;
     private javax.swing.JLabel UsernameL;
