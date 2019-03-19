@@ -1,4 +1,4 @@
-
+//Alle Importe, die wir brauchen
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -29,9 +29,10 @@ public class ErsteFrame extends javax.swing.JFrame {
     Integer pkPosition;
     String primary_key;
     OurTable t;
+    //Variablen deklariert, die später im Code verwendet werden.
     public ErsteFrame() {
         initComponents();
-        
+        //Driver hinzugefügt
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
@@ -243,14 +244,15 @@ public class ErsteFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+//Wenn wir auf Connect klicken, wird diese Methode ausgefuhrt
     private void ConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectActionPerformed
         try {
-            
+            //Connection mit Database erreichen
             con =DriverManager.getConnection("jdbc:mysql://"+ServerT.getText()+":"+PortT.getText()+"/"+DatabaseT.getText(),UsernameT.getText(), PasswordT.getText());
+            
             Connect.setEnabled(false);
             Disconnect.setEnabled(true);
-            //javax.swing.JOptionPane.showMessageDialog(this, "Connected to Database");
+            //Hier werden die Namen der Tabellen geholt und in Dropdown eingefugt
             ResultSet rs=con.getMetaData().getTables(null, null, "%", null);
             while (rs.next()) {
                 Combo.addItem(rs.getString(3));
@@ -274,19 +276,18 @@ public class ErsteFrame extends javax.swing.JFrame {
     private void PasswordTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PasswordTActionPerformed
+    //Eine Methode wenn wir die Zellen aendern in der Tabelle
     private void tableModelChanged(TableModelEvent e){
-        
-        
+        //Wir speichern die geaenderte Zeile
         int row=e.getFirstRow();
         
         
-        
+        //Wir speichern die primarykey, die Spaltenname und die Werte der geaenderten Zelle
         String id=jTable1.getModel().getValueAt(row, pkPosition).toString();
         String columnname=jTable1.getModel().getColumnName(e.getColumn());
         String changed=(String) jTable1.getValueAt(row, e.getColumn());
-        //System.out.println(columnname+" "+row+" "+id);
-        //System.out.println(changed);
         
+        //Erstellen wir eine Prepared Statement, eine Update
         try {
             
             PreparedStatement update=con.prepareStatement("UPDATE "+Combo.getSelectedItem()+" set "+columnname+"=? "
@@ -304,8 +305,9 @@ public class ErsteFrame extends javax.swing.JFrame {
     private void UsernameTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UsernameTActionPerformed
-
+//Wenn wir auf Disconnect Button klicken
     private void DisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DisconnectActionPerformed
+        //Wir müssen die Datenbankverbindung schliessen, Connect button wieder klickbar machen und Disconnect das umgekehrte und auch die Elemente der Dropdownliste loeschen
         try {
             con.close();
             Connect.setEnabled(true);
@@ -324,42 +326,48 @@ public class ErsteFrame extends javax.swing.JFrame {
     private void jTable1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTable1InputMethodTextChanged
         
     }//GEN-LAST:event_jTable1InputMethodTextChanged
-
+//Wenn wir auf einer der Elementen der Dropdownliste klicken, wird dieses Block Code ausgefuhrt
     private void ComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboActionPerformed
+        //Es soll das machen, wenn es etwas, wo es nicht leer ist, geklickt hat.
         if(Combo.getSelectedItem()!=null){
         try {
+            
+            //Wir speichern die Tabellenname und fuhren es in ein Prepared Statement ein und fuhren es aus.
             String clas=(String) Combo.getSelectedItem();
             PreparedStatement state=con.prepareStatement("select * from "+clas+";");
             
+            //Wir speichern die Daten aus dieser Tabelle
             ResultSet r=state.executeQuery();
-            
             ResultSetMetaData rsmd=r.getMetaData();
+            //Wir speichern die Daten aus dieser Database
             DatabaseMetaData md=con.getMetaData();
+            //Wir speichern die PrimaryKey Daten aus dieser Tabelle
             ResultSet res_prim=md.getPrimaryKeys(null,null, clas);
             if(res_prim.next()){
-            primary_key=res_prim.getString(4);
-            pkPosition = res_prim.getInt("KEY_SEQ")-1;
+            primary_key=res_prim.getString(4); //Spaltenname der Primarykey
+            pkPosition = res_prim.getInt("KEY_SEQ")-1;//PrimaryKey Position
             }
-            int count=rsmd.getColumnCount();
-            //javax.swing.JOptionPane.showMessageDialog(this, "Read");
-            //DefaultTableModel t=new DefaultTableModel();
+            int count=rsmd.getColumnCount();//Wie viele Spalten gibt es
             
-            t=new OurTable(pkPosition);
-            t.setColumnCount(rsmd.getColumnCount());
-            //r.getString(1);
+            t=new OurTable(pkPosition);//Tabelle erstellt
+            //Die Spalten mit Name einsetzen
+            t.setColumnCount(count);
+
             String[] column=new String[count];
-            //String[] row=new String[1];
+
             for(int i=1; i<count+1;i++){
                 column[i-1]=rsmd.getColumnLabel(i);
             }
-            //String[][] dataVector=new String[][]{null};
+            
             int rows=0;
+            //Wir speichern wie viele Zeilen wir haben
             while (r.next()) {
                 rows++;
             }
-            r.beforeFirst();
+            r.beforeFirst();//Dann noch einmal den Cursor im Anfang setzen
             Object[][] resultSet = new Object[rows][count];
             int row = 0;
+            //Die Zeilen mit Daten fuellen
             while (r.next()) {
                 for (int i = 0; i < count; i++) {
                    resultSet[row][i] = r.getObject(i+1);
@@ -368,15 +376,16 @@ public class ErsteFrame extends javax.swing.JFrame {
             }
             
             
-            t.setColumnIdentifiers(column);
-            t.setRowCount(r.getRow());
-            t.setDataVector(resultSet, column);
-            t.addRow(new Object[count]);
-            jTable1.setModel(t);
+            t.setColumnIdentifiers(column);//Setzt wie viele Spalten da gibt
+            t.setRowCount(rows);//Setzt wie viele Zeilen da gibt
+            t.setDataVector(resultSet, column);//Die Daten in der Tabelle setzen
+            t.addRow(new Object[count]);//Eine leeres Zeile am Ende damit wir die Insert Option haben
+            jTable1.setModel(t);//Tabelle wird fertig als ein Modell und ist bereit zum Visualisieren
             
-            //javax.swing.JOptionPane.showMessageDialog(this, "Done");
+            //Wir haben hier Listener erstellt, damit wir wissen, wenn etwas in der Tabelle geaendert wird.
             t.addTableModelListener(new TableModelListener(){
             @Override
+            //Wir mussen selbst die Methode uberschreiben und unsere Version verwenden.
             public void tableChanged(TableModelEvent e){
                 tableModelChanged(e);
                 
@@ -389,12 +398,13 @@ public class ErsteFrame extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_ComboActionPerformed
-
+//Wenn wir auf diesem Button druecken
     private void DeletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeletebuttonActionPerformed
+        //Wir lesen, welche Zeile haben wir selektiert mit dem Maus
         int row=jTable1.getSelectedRow();
-        String id=jTable1.getModel().getValueAt(row, pkPosition).toString();
+        String id=jTable1.getModel().getValueAt(row, pkPosition).toString();//Wir holen die Primary Key
         try {
-            
+            //Wir loeschen diese Zeile mit einem Prepared Statement
             PreparedStatement update=con.prepareStatement("DELETE FROM "+Combo.getSelectedItem()+" WHERE "+primary_key+"="+id);
             
             
