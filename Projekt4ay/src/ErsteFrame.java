@@ -28,6 +28,7 @@ public class ErsteFrame extends javax.swing.JFrame {
     Connection con;
     Integer pkPosition;
     String primary_key;
+    OurTable t;
     public ErsteFrame() {
         initComponents();
         
@@ -66,6 +67,7 @@ public class ErsteFrame extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         Combo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        Deletebutton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,6 +158,13 @@ public class ErsteFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Tabelle:");
 
+        Deletebutton.setText("Delete");
+        Deletebutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeletebuttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,39 +172,44 @@ public class ErsteFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(DatabaseL)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DatabaseT, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(ServerL)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ServerT)))
-                        .addGap(18, 18, 18)
-                        .addComponent(PortL)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(PortT, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PasswordL)
-                            .addComponent(UsernameL))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(UsernameT, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PasswordT, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 525, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Disconnect, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(Connect, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 1010, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(DatabaseL)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(DatabaseT, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(ServerL)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ServerT)))
+                                .addGap(18, 18, 18)
+                                .addComponent(PortL)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(PortT, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(PasswordL)
+                                    .addComponent(UsernameL))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(UsernameT, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(PasswordT, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 525, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Disconnect, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(Connect, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 1010, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Deletebutton)
+                        .addGap(236, 236, 236))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,9 +233,11 @@ public class ErsteFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Deletebutton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -243,7 +259,7 @@ public class ErsteFrame extends javax.swing.JFrame {
             
             
         } catch (SQLException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Cannot reach Database");
+            javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_ConnectActionPerformed
 
@@ -262,6 +278,8 @@ public class ErsteFrame extends javax.swing.JFrame {
         
         
         int row=e.getFirstRow();
+        
+        
         
         String id=jTable1.getModel().getValueAt(row, pkPosition).toString();
         String columnname=jTable1.getModel().getColumnName(e.getColumn());
@@ -325,7 +343,8 @@ public class ErsteFrame extends javax.swing.JFrame {
             int count=rsmd.getColumnCount();
             //javax.swing.JOptionPane.showMessageDialog(this, "Read");
             //DefaultTableModel t=new DefaultTableModel();
-            OurTable t=new OurTable(pkPosition);
+            
+            t=new OurTable(pkPosition);
             t.setColumnCount(rsmd.getColumnCount());
             //r.getString(1);
             String[] column=new String[count];
@@ -371,6 +390,25 @@ public class ErsteFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ComboActionPerformed
 
+    private void DeletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeletebuttonActionPerformed
+        int row=jTable1.getSelectedRow();
+        String id=jTable1.getModel().getValueAt(row, pkPosition).toString();
+        try {
+            
+            PreparedStatement update=con.prepareStatement("DELETE FROM "+Combo.getSelectedItem()+" WHERE "+primary_key+"="+id);
+            
+            
+            update.executeUpdate();
+            
+        } catch (SQLException ex) {
+            
+            javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage());        
+        }
+        
+    
+        
+    }//GEN-LAST:event_DeletebuttonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -408,6 +446,7 @@ public class ErsteFrame extends javax.swing.JFrame {
     private javax.swing.JButton Connect;
     private javax.swing.JLabel DatabaseL;
     private javax.swing.JTextField DatabaseT;
+    private javax.swing.JButton Deletebutton;
     private javax.swing.JButton Disconnect;
     private javax.swing.JLabel PasswordL;
     private javax.swing.JPasswordField PasswordT;
