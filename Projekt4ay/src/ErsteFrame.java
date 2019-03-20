@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -280,7 +281,8 @@ public class ErsteFrame extends javax.swing.JFrame {
     private void tableModelChanged(TableModelEvent e){
         //Wir speichern die geaenderte Zeile
         int row=e.getFirstRow();
-        
+        int lastrow=t.getRowCount()-1;
+        if(row!=lastrow){
         
         //Wir speichern die primarykey, die Spaltenname und die Werte der geaenderten Zelle
         String id=jTable1.getModel().getValueAt(row, pkPosition).toString();
@@ -299,8 +301,9 @@ public class ErsteFrame extends javax.swing.JFrame {
             
         } catch (SQLException ex) {
             
-            javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage());        }
-        
+            javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage());        
+        }
+}
     }
     private void UsernameTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameTActionPerformed
         // TODO add your handling code here:
@@ -403,13 +406,14 @@ public class ErsteFrame extends javax.swing.JFrame {
         //Wir lesen, welche Zeile haben wir selektiert mit dem Maus
         int row=jTable1.getSelectedRow();
         String id=jTable1.getModel().getValueAt(row, pkPosition).toString();//Wir holen die Primary Key
+        
         try {
             //Wir loeschen diese Zeile mit einem Prepared Statement
             PreparedStatement update=con.prepareStatement("DELETE FROM "+Combo.getSelectedItem()+" WHERE "+primary_key+"="+id);
             
             
             update.executeUpdate();
-            
+            t.removeRow(row);
         } catch (SQLException ex) {
             
             javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage());        
